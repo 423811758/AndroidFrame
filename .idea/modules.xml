@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidDemo/AndroidDemo.iml" filepath="$PROJECT_DIR$/AndroidDemo/AndroidDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidFrame.iml" filepath="$PROJECT_DIR$/AndroidFrame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wolf_android_opensource/wolf_android_opensource.iml" filepath="$PROJECT_DIR$/wolf_android_opensource/wolf_android_opensource.iml" />
+    </modules>
+  </component>
+</project>

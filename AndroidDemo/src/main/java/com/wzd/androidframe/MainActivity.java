@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.wolf.android.app.BaseActivity;
 import com.wolf.android.http.OkHttpUtils;
 import com.wolf.android.http.callback.StringCallback;
+import com.wzd.androidframe.Setting.URLSetting;
 
 import okhttp3.Call;
 
@@ -22,7 +23,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-        OkHttpUtils.get().url("http://218.5.79.104/api/open/adverpic/getadverpicList/1/10").build().execute(new StringCallback() {
+        OkHttpUtils.get().url(URLSetting.baseApiUrl + "open/adverpic/getadverpicList/1/10").build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
 
@@ -30,7 +31,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onResponse(String response, int id) {
-                Log.i("aaaaaaaaaa", response);
+                Log.i("test", response);
                 mResultTv.setText(response);
             }
         });
