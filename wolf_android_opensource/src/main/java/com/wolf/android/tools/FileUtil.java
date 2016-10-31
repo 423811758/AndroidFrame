@@ -9,6 +9,8 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.MediaStore;
 
+import com.wolf.android.data.CommonData;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -41,6 +43,49 @@ public class FileUtil {
      * 最小的存储空间
      */
     public final static int MIN_SPACE_SIZE = 1024 * 1024 * 1;
+
+
+    /**
+     * 得到本机SD卡的存储目录--需要判断空间
+     *
+     * @return
+     */
+    public static String getPath_Space(Context context) {
+        if (getExternalPath() != null && FileUtil.getExternalStorageSize() > 0) {
+            File dir = new File(getExternalPath() + CommonData.APP_PATH);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            return getExternalPath() + CommonData.APP_PATH;
+        } else {
+            // 设置手机程序内部存储空间目录
+            return getInternalPath_Space(context);
+        }
+    }
+
+    /**
+     * 得到本机SD卡的目录
+     *
+     * @return
+     */
+    public static String getExternalPath() {
+        return (FileUtil.getExternalStorageDirectory() == null) ? null
+                : FileUtil.getExternalStorageDirectory().getPath();
+    }
+
+    /**
+     * 得到本机程序内部的存储目录--需要判断空间
+     *
+     * @return
+     */
+    public static String getInternalPath_Space(Context context) {
+        if (FileUtil.getInternalStorageSizeByPath(context.getFilesDir()
+                .getParent()) >= MIN_SPACE_SIZE) {
+            return context.getFilesDir().getPath();
+        } else
+            return null;
+
+    }
 
     // ************************ 路径和文件创建相关等**********************************
 
