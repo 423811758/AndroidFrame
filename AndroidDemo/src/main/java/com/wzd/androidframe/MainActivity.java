@@ -3,9 +3,11 @@ package com.wzd.androidframe;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import com.wolf.android.app.BaseActivity;
 import com.wolf.android.http.OkHttpUtils;
 import com.wolf.android.http.callback.StringCallback;
@@ -20,10 +22,12 @@ import okhttp3.Call;
 public class MainActivity extends BaseActivity {
 
     private TextView mResultTv;
+    private ImageView mPicassoIv;
 
     @Override
     protected void initComponent() {
         mResultTv = (TextView) findViewById(R.id.http_result_tv);
+        mPicassoIv = (ImageView) findViewById(R.id.picasso_iv);
     }
 
     @Override
@@ -59,6 +63,8 @@ public class MainActivity extends BaseActivity {
         for (int i = 0; i < persons1.size(); i++) {
             mResultTv.append("name: " + persons1.get(i).getName() + "; age: " + persons1.get(i).getAge() + "\n");
         }
+
+        Picasso.with(mContext).load("http://i-4.yxdown.com/2016/9/20/57350faa-b439-4738-a31b-bc5d9e7ec4df.jpg").into(mPicassoIv);
     }
 
     @Override

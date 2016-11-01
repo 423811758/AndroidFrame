@@ -8,8 +8,12 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.KeyguardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -417,5 +421,45 @@ public final class AppHelper {
         StringWriter out = new StringWriter();
         ex.printStackTrace(new PrintWriter(out));
         return out.toString();
+    }
+
+    /**
+     * 判断当前客户端是否在前台运行
+     *
+     * @param context
+     * @return false 后台运行 true 前台运行
+     */
+    public static boolean isClientRunTop(Context context) {
+        if (isInKeyguardRestrictedInputMode(context))// 锁屏
+            return false;
+        boolean result = false;
+        ActivityManager manager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> task_info = manager.getRunningTasks(20);
+        if (task_info != null && task_info.size() > 0) {
+            ComponentName cname = ((ActivityManager.RunningTaskInfo) (task_info.get(0))).topActivity;
+            if (cname != null
+                    && context.getPackageName().equals(
+                    cname.getPackageName().trim())) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 判断当前是否处于锁屏
+     *
+     * @param context
+     * @return false 否 true 是
+     */
+    public static boolean isInKeyguardRestrictedInputMode(Context context) {
+        KeyguardManager mKeyguardManager = (KeyguardManager) context
+                .getSystemService(Context.KEYGUARD_SERVICE);
+        if (mKeyguardManager.inKeyguardRestrictedInputMode()) {// 锁屏
+            return true;
+        } else {
+            return false;
+        }
     }
 }

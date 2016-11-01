@@ -1,5 +1,12 @@
 package com.wolf.android.tools;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+import android.os.Looper;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -8,16 +15,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 import java.util.TreeSet;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
-import android.os.Looper;
 
 /**
  * <p>Description: 程序崩溃处理类</p>
@@ -115,6 +112,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 e.printStackTrace();
             }
             Log4JUtil.info("kill Process...");
+            // TODO 崩溃后程序处理
 //            Intent intent = new Intent(
 //                    GlobalData.globalContext.getApplicationContext(),
 //                    SplashActivity.class);
