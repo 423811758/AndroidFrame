@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wolf.android.app.BaseActivity;
+import com.wolf.android.data.CommonData;
 import com.wolf.android.http.OkHttpUtils;
 import com.wolf.android.http.callback.StringCallback;
 import com.wolf.android.tools.AppHelper;
@@ -14,7 +15,9 @@ import com.wolf.android.tools.GsonUtil;
 import com.wolf.android.tools.Log4JUtil;
 import com.wolf.android.tools.MD5Util;
 import com.wzd.androidframe.Setting.URLSetting;
+import com.wzd.androidframe.data.rep.RepLoginResultDTO;
 import com.wzd.androidframe.data.rep.RepSysinfoDTO;
+import com.wzd.androidframe.data.rep.RepUserSignInAddScoreDTO;
 
 import okhttp3.Call;
 
@@ -24,8 +27,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private EditText mPasswordEt;
     private Button mLoginBtn;
     private Button mGetSysInfoBtn;
+    private Button mSignInBtn;
     private TextView mResultTv;
     private ImageView mPicassoIv;
+    private long mId;
 
     @Override
     protected void initComponent() {
@@ -33,11 +38,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mPasswordEt = (EditText) findViewById(R.id.password_et);
         mLoginBtn = (Button) findViewById(R.id.login_btn);
         mGetSysInfoBtn = (Button) findViewById(R.id.get_sys_info_btn);
+        mSignInBtn = (Button) findViewById(R.id.sign_in_btn);
         mResultTv = (TextView) findViewById(R.id.http_result_tv);
         mPicassoIv = (ImageView) findViewById(R.id.picasso_iv);
 
         mLoginBtn.setOnClickListener(this);
         mGetSysInfoBtn.setOnClickListener(this);
+        mSignInBtn.setOnClickListener(this);
     }
 
     @Override
@@ -70,7 +77,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case R.id.get_sys_info_btn:
                 getSysInfo();
                 break;
+            case R.id.sign_in_btn:
+                signIn();
+                break;
         }
+    }
+
+    private void signIn() {
+        OkHttpUtils.get().url(URLSetting.baseApiUrl+"user/"+mId+"/signinaddscore").build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                RepUserSignInAddScoreDTO result = GsonUtil.jsonToBean(response, RepUserSignInAddScoreDTO.class);
+                mResultTv.append("\n"+result.getIntegralAmount());
+            }
+        });
     }
 
     private void login() {
@@ -90,7 +115,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onResponse(String response, int id) {
-                mResultTv.setText(response);
+                RepLoginResultDTO resultDTO = GsonUtil.jsonToBean(response, RepLoginResultDTO.class);
+                mId = resultDTO.getUserDTO().getId();
+                try {
+                    OkHttpUtils.getInstance().setAuthKey(mContext, resultDTO.getToken(), resultDTO.getUserDTO().getId());
+                    mResultTv.append(CommonData.LOGIN_TOKEN + "\n");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mResultTv.append(response);
             }
         });
     }

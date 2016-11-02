@@ -11,4 +11,6 @@ public class CommonData {
     public static final String LOGGER_FILE_NAME_1 = "/AndroidFrame.log.1";
 
     public static final String APP_PATH = "/AndroidFrame";
+
+    public static String LOGIN_TOKEN = "";
 }

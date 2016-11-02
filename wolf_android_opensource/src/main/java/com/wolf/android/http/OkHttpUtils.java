@@ -1,12 +1,17 @@
 package com.wolf.android.http;
 
+import android.content.Context;
+import android.util.Base64;
+
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.concurrent.Executor;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
+import com.wolf.android.data.CommonData;
 import com.wolf.android.http.builder.GetBuilder;
 import com.wolf.android.http.builder.HeadBuilder;
 import com.wolf.android.http.builder.OtherRequestBuilder;
@@ -16,6 +21,8 @@ import com.wolf.android.http.builder.PostStringBuilder;
 import com.wolf.android.http.callback.Callback;
 import com.wolf.android.http.request.RequestCall;
 import com.wolf.android.http.utils.Platform;
+import com.wolf.android.tools.AppHelper;
+import com.wolf.android.tools.MD5Util;
 
 /**
  * Created by zhy on 15/8/17.
@@ -177,5 +184,13 @@ public class OkHttpUtils {
 		public static final String DELETE = "DELETE";
 		public static final String PUT = "PUT";
 		public static final String PATCH = "PATCH";
+	}
+
+	public void setAuthKey(Context context, String token, long personId) throws Exception {
+		String key = AppHelper.getIMEI(context) + ":" + personId + ":" + token;
+		key = MD5Util.getMD5Str(key);
+		key = personId + ":" + key;
+		CommonData.LOGIN_TOKEN = URLEncoder.encode(Base64.encodeToString(
+				key.getBytes("UTF-8"), android.util.Base64.URL_SAFE), "UTF-8");
 	}
 }

@@ -1,13 +1,17 @@
 package com.wolf.android.http.request;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import com.wolf.android.data.CommonData;
 import com.wolf.android.http.callback.Callback;
 import com.wolf.android.http.utils.Exceptions;
+import com.wolf.android.tools.Log4JUtil;
+import com.wolf.android.tools.StringUtil;
 
 /**
  * Created by zhy on 15/11/6.
@@ -65,6 +69,14 @@ public abstract class OkHttpRequest {
     }
 
     protected void appendHeaders() {
+        //设置统一请求头
+        if (!StringUtil.isEmpty(CommonData.LOGIN_TOKEN.trim())) {
+            if (this.headers == null) {
+                headers = new LinkedHashMap<String, String>();
+            }
+            headers.put("Authorization", CommonData.LOGIN_TOKEN);
+        }
+
         Headers.Builder headerBuilder = new Headers.Builder();
         if (headers == null || headers.isEmpty())
             return;
