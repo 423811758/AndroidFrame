@@ -19,6 +19,23 @@ android {
     }
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.0.0'
+    }
+}
+
+apply plugin: 'org.greenrobot.greendao'
+
 dependencies {
     compile project(':wolf_android_opensource')
+}
+
+greendao {
+    schemaVersion 1
+    daoPackage 'com.wzd.greendao.gen'
+    targetGenDir 'src/main/java'
 }

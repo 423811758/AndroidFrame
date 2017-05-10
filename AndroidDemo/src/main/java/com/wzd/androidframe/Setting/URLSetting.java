@@ -6,6 +6,6 @@ package com.wzd.androidframe.Setting;
  */
 public class URLSetting {
 
-    public static final String baseUrl = "http://192.168.133.119:8080/";
+    public static final String baseUrl = "http://192.168.133.110:8080/";
     public static final String baseApiUrl = baseUrl + "api/";
 }
